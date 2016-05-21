@@ -1,0 +1,17 @@
+# Build output
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# IDEs and editors
+.idea/
+.settings/
+.vscode/
+
+# System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db

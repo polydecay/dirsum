@@ -329,6 +329,7 @@ func newCommand(ctx *cli.Context) {
 	}
 
 	source, output := ctx.Args()[0], ctx.Args()[1]
+	outputBase := filepath.Base(output)
 	fmt.Print(sprintfHeader("Hashing: %v", source))
 
 	var sums Checksums
@@ -339,6 +340,23 @@ func newCommand(ctx *cli.Context) {
 
 		if fi.IsDir() {
 			return nil
+		}
+
+		// Exclude the output file from the sourceMap.
+		if strings.HasSuffix(path, outputBase) {
+			pathAbs, err := filepath.Abs(path)
+			if err != nil {
+				return err
+			}
+
+			outputAbs, err := filepath.Abs(output)
+			if err != nil {
+				return err
+			}
+
+			if pathAbs == outputAbs {
+				return nil
+			}
 		}
 
 		hash, err := generateMd5(path)

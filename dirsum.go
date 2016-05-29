@@ -321,11 +321,11 @@ func sprintfHeader(format string, a ...interface{}) string {
 // -------------------------------------------------------------------
 // Commands
 
-func newCommand(ctx *cli.Context) {
+func newCommand(ctx *cli.Context) error {
 	if len(ctx.Args()) < 2 {
 		fmt.Println("Incorrect Usage.\n")
 		cli.ShowSubcommandHelp(ctx)
-		return
+		return nil
 	}
 
 	source, output := ctx.Args()[0], ctx.Args()[1]
@@ -380,13 +380,14 @@ func newCommand(ctx *cli.Context) {
 	}
 
 	printColored(fmt.Sprintf(" Wrote: %v\n\n", output), color.FgGreen)
+	return nil
 }
 
-func updateCommand(ctx *cli.Context) {
+func updateCommand(ctx *cli.Context) error {
 	if len(ctx.Args()) < 2 {
 		fmt.Println("Incorrect Usage.\n")
 		cli.ShowSubcommandHelp(ctx)
-		return
+		return nil
 	}
 
 	source, target := ctx.Args()[0], ctx.Args()[1]
@@ -474,13 +475,14 @@ func updateCommand(ctx *cli.Context) {
 	}
 
 	printColored(fmt.Sprintf(" Updated: %v\n\n", target), color.FgGreen)
+	return nil
 }
 
-func verifyCommand(ctx *cli.Context) {
+func verifyCommand(ctx *cli.Context) error {
 	if len(ctx.Args()) < 1 {
 		fmt.Println("Incorrect Usage.\n")
 		cli.ShowSubcommandHelp(ctx)
-		return
+		return nil
 	}
 
 	path := ctx.Args()[0]
@@ -489,7 +491,7 @@ func verifyCommand(ctx *cli.Context) {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgRed)
-		return
+		os.Exit(1)
 	}
 
 	if fileInfo.IsDir() {
@@ -510,6 +512,7 @@ func verifyCommand(ctx *cli.Context) {
 	}
 
 	fmt.Print("\n")
+	return nil
 }
 
 // -------------------------------------------------------------------

@@ -14,7 +14,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	"github.com/fatih/color"
 	"golang.org/x/crypto/ssh/terminal"
 )

@@ -253,7 +253,7 @@ func generateMd5(path string) (string, error) {
 func verifyFile(path string) {
 	sums, err := readFile(path)
 	if err != nil {
-		printColored(fmt.Sprintf(" Error: %v\n", err), color.FgRed)
+		printColored(fmt.Sprintf(" Error: %v\n", err), color.FgHiRed)
 		return
 	}
 
@@ -264,19 +264,19 @@ func verifyFile(path string) {
 		if !isValid {
 			if !hasErrors {
 				hasErrors = true
-				printColored(fmt.Sprintf(" ER: %v\n", path), color.FgRed)
+				printColored(fmt.Sprintf(" ER: %v\n", path), color.FgHiRed)
 			}
 
 			if err != nil {
-				printColored(fmt.Sprintf("   Error: %v\n", c.Path), color.FgRed)
+				printColored(fmt.Sprintf("   Error: %v\n", c.Path), color.FgHiRed)
 			} else {
-				printColored(fmt.Sprintf("   Invalid: %v\n", c.Path), color.FgRed)
+				printColored(fmt.Sprintf("   Invalid: %v\n", c.Path), color.FgHiRed)
 			}
 		}
 	}
 
 	if !hasErrors {
-		printColored(fmt.Sprintf(" OK: %v\n", path), color.FgGreen)
+		printColored(fmt.Sprintf(" OK: %v\n", path), color.FgHiGreen)
 	}
 }
 
@@ -369,17 +369,17 @@ func newCommand(ctx *cli.Context) error {
 	})
 
 	if err != nil {
-		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgRed)
+		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgHiRed)
 		os.Exit(1)
 	}
 
 	err = writeFile(sums, output)
 	if err != nil {
-		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgRed)
+		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgHiRed)
 		os.Exit(1)
 	}
 
-	printColored(fmt.Sprintf(" Wrote: %v\n\n", output), color.FgGreen)
+	printColored(fmt.Sprintf(" Wrote: %v\n\n", output), color.FgHiGreen)
 	return nil
 }
 
@@ -428,14 +428,14 @@ func updateCommand(ctx *cli.Context) error {
 	})
 
 	if err != nil {
-		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgRed)
+		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgHiRed)
 		os.Exit(1)
 	}
 
 	// Get current checksums from the target file.
 	targetMap, err := readFileToMap(target)
 	if err != nil {
-		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgRed)
+		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgHiRed)
 		os.Exit(1)
 	}
 
@@ -454,7 +454,7 @@ func updateCommand(ctx *cli.Context) error {
 		if _, ok := targetMap[key]; !ok {
 			hash, err := generateMd5(key)
 			if err != nil {
-				printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgRed)
+				printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgHiRed)
 				os.Exit(1)
 			}
 
@@ -470,11 +470,11 @@ func updateCommand(ctx *cli.Context) error {
 
 	err = writeFile(targetSlice, target)
 	if err != nil {
-		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgRed)
+		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgHiRed)
 		os.Exit(1)
 	}
 
-	printColored(fmt.Sprintf(" Updated: %v\n\n", target), color.FgGreen)
+	printColored(fmt.Sprintf(" Updated: %v\n\n", target), color.FgHiGreen)
 	return nil
 }
 
@@ -490,14 +490,14 @@ func verifyCommand(ctx *cli.Context) error {
 
 	fileInfo, err := os.Stat(path)
 	if err != nil {
-		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgRed)
+		printColored(fmt.Sprintf(" Error: %v\n\n", err), color.FgHiRed)
 		os.Exit(1)
 	}
 
 	if fileInfo.IsDir() {
 		filepath.Walk(path, func(path string, fi os.FileInfo, err error) error {
 			if err != nil {
-				printColored(fmt.Sprintf(" Error: %v\n", err), color.FgRed)
+				printColored(fmt.Sprintf(" Error: %v\n", err), color.FgHiRed)
 				return nil
 			}
 

@@ -280,6 +280,30 @@ func verifyFile(path string) {
 	}
 }
 
+func verifyFileBasic(path string) {
+	sums, err := readFile(path)
+	if err != nil {
+		printColored(fmt.Sprintf(" Error: %v\n", err), color.FgHiRed)
+		return
+	}
+
+	hasErrors := false
+	for _, c := range sums {
+		if _, err := os.Stat(c.Path); err != nil {
+			if !hasErrors {
+				hasErrors = true
+				printColored(fmt.Sprintf(" ER: %v\n", path), color.FgHiRed)
+			}
+
+			printColored(fmt.Sprintf("   Error: %v\n", c.Path), color.FgHiRed)
+		}
+	}
+
+	if !hasErrors {
+		printColored(fmt.Sprintf(" OK: %v\n", path), color.FgHiGreen)
+	}
+}
+
 // -------------------------------------------------------------------
 // Printing
 
@@ -502,13 +526,21 @@ func verifyCommand(ctx *cli.Context) error {
 			}
 
 			if strings.HasSuffix(path, ".md5") && !fi.IsDir() {
-				verifyFile(path)
+				if ctx.Bool("basic") {
+					verifyFileBasic(path)
+				} else {
+					verifyFile(path)
+				}
 			}
 
 			return nil
 		})
 	} else {
-		verifyFile(path)
+		if ctx.Bool("basic") {
+			verifyFileBasic(path)
+		} else {
+			verifyFile(path)
+		}
 	}
 
 	fmt.Print("\n")

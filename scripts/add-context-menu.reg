@@ -1,0 +1,23 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\.md5\shell\Verify checksums]
+"Position"="Top"
+[HKEY_CLASSES_ROOT\.md5\shell\Verify checksums\command]
+@="cmd.exe /k \"dirsum v \"%V\"\""
+
+[HKEY_CLASSES_ROOT\.md5\shell\Append checksums\command]
+@="cmd.exe /c \"dirsum u \"%W\" \"%V\"\""
+
+[HKEY_CLASSES_ROOT\.md5\shell\Sync checksums\command]
+@="cmd.exe /c \"dirsum u -d \"%W\" \"%V\"\""
+
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\Create checksums]
+"Extended"=""
+[HKEY_CLASSES_ROOT\Directory\Background\shell\Create checksums\command]
+@="cmd.exe /c \"dirsum n \"%V\" \"%V\\.checksums.md5\"\""
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\Verify checksums]
+"Extended"=""
+[HKEY_CLASSES_ROOT\Directory\Background\shell\Verify checksums\command]
+@="cmd.exe /k \"dirsum v \"%V\"\""

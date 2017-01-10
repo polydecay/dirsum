@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+[-HKEY_CLASSES_ROOT\.md5\shell\Verify checksums]
+[-HKEY_CLASSES_ROOT\.md5\shell\Append checksums]
+[-HKEY_CLASSES_ROOT\.md5\shell\Sync checksums]
+
+[-HKEY_CLASSES_ROOT\Directory\Background\shell\Create checksums]
+[-HKEY_CLASSES_ROOT\Directory\Background\shell\Verify checksums]

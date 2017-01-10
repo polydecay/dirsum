@@ -510,7 +510,7 @@ func verifyCommand(ctx *cli.Context) error {
 	}
 
 	path := ctx.Args()[0]
-	fmt.Print(sprintfHeader("Veryfing: %v", path))
+	fmt.Print(sprintfHeader("Verifying: %v", path))
 
 	fileInfo, err := os.Stat(path)
 	if err != nil {

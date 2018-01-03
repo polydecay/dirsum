@@ -12,11 +12,11 @@ import (
 	"sort"
 	"strings"
 	"time"
-	"unicode/utf8"
 
-	"github.com/urfave/cli"
 	"github.com/fatih/color"
+	"github.com/urfave/cli"
 	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/text/width"
 )
 
 var (
@@ -308,14 +308,22 @@ func verifyFileBasic(path string) {
 // Printing
 
 func ellipsize(s string, maxLength int) string {
-	if utf8.RuneCountInString(s) > maxLength {
-		var index int
-		for runeIndex := range s {
-			index++
-			if index > maxLength-1 {
-				return s[:runeIndex] + "…"
-			}
+	length := 0
+	lastIndex := 0
+	for i, runeValue := range s {
+		p := width.LookupRune(runeValue)
+		switch p.Kind() {
+		case width.EastAsianFullwidth, width.EastAsianWide, width.EastAsianAmbiguous:
+			length += 2
+		default:
+			length++
 		}
+
+		if length > maxLength-1 {
+			return s[:lastIndex] + "…"
+		}
+
+		lastIndex = i
 	}
 
 	return s
@@ -465,7 +473,7 @@ func updateCommand(ctx *cli.Context) error {
 
 	// Remove old checksums from the target map.
 	if ctx.Bool("delete") {
-		for key, _ := range targetMap {
+		for key := range targetMap {
 			if _, ok := sourceMap[key]; !ok {
 				delete(targetMap, key)
 			}
@@ -474,7 +482,7 @@ func updateCommand(ctx *cli.Context) error {
 	}
 
 	// Insert new checksum in the target map.
-	for key, _ := range sourceMap {
+	for key := range sourceMap {
 		if _, ok := targetMap[key]; !ok {
 			hash, err := generateMd5(key)
 			if err != nil {

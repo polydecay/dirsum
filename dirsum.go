@@ -168,8 +168,7 @@ func readFileToMap(path string) (map[string]Checksum, error) {
 	r := regexp.MustCompile(`^[0-9a-fA-F]{32} \*.*$`)
 
 	dir := filepath.Dir(path)
-	var checksumMap map[string]Checksum
-	checksumMap = make(map[string]Checksum)
+	var checksumMap = make(map[string]Checksum)
 
 	// Replace CRLF line endings with LF and split on each line.
 	lines := strings.Split(strings.Replace(string(data), "\r\n", "\n", -1), "\n")
@@ -355,7 +354,7 @@ func sprintfHeader(format string, a ...interface{}) string {
 
 func newCommand(ctx *cli.Context) error {
 	if len(ctx.Args()) < 2 {
-		fmt.Println("Incorrect Usage.\n")
+		fmt.Print("Incorrect Usage.\n\n")
 		cli.ShowSubcommandHelp(ctx)
 		return nil
 	}
@@ -417,7 +416,7 @@ func newCommand(ctx *cli.Context) error {
 
 func updateCommand(ctx *cli.Context) error {
 	if len(ctx.Args()) < 2 {
-		fmt.Println("Incorrect Usage.\n")
+		fmt.Print("Incorrect Usage.\n\n")
 		cli.ShowSubcommandHelp(ctx)
 		return nil
 	}
@@ -427,8 +426,7 @@ func updateCommand(ctx *cli.Context) error {
 	fmt.Print(sprintfHeader("Updating: %v", target))
 
 	// Get new files from the source path.
-	var sourceMap map[string]bool
-	sourceMap = make(map[string]bool)
+	var sourceMap = make(map[string]bool)
 	err := filepath.Walk(source, func(path string, fi os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -512,7 +510,7 @@ func updateCommand(ctx *cli.Context) error {
 
 func verifyCommand(ctx *cli.Context) error {
 	if len(ctx.Args()) < 1 {
-		fmt.Println("Incorrect Usage.\n")
+		fmt.Print("Incorrect Usage.\n\n")
 		cli.ShowSubcommandHelp(ctx)
 		return nil
 	}

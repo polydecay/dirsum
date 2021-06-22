@@ -15,7 +15,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/urfave/cli"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 	"golang.org/x/text/width"
 )
 
@@ -579,8 +579,8 @@ func main() {
 	app.Before = func(ctx *cli.Context) error {
 		// Check if stdout is a terminal and attempt to get the terminal width.
 		fd := int(os.Stdout.Fd())
-		if terminal.IsTerminal(fd) {
-			if width, _, err := terminal.GetSize(fd); err == nil {
+		if term.IsTerminal(fd) {
+			if width, _, err := term.GetSize(fd); err == nil {
 				TermWidth = width
 				IsTerminal = true
 			}

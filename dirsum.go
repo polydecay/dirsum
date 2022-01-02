@@ -614,7 +614,7 @@ func main() {
 			Name:        "verify",
 			Aliases:     []string{"v"},
 			Usage:       "verify md5 files",
-			Description: "path\n\n Arguments:\n   path \tfile to verify (if directory, recursivly find '.md5' files)",
+			Description: "path\n\n Arguments:\n   path \tfile to verify (if directory, recursively find '.md5' files)",
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "basic, b",

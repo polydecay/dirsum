@@ -5,6 +5,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"io"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -364,12 +365,12 @@ func newCommand(ctx *cli.Context) error {
 	fmt.Print(sprintfHeader("Hashing: %v", source))
 
 	var sums Checksums
-	err := filepath.Walk(source, func(path string, fi os.FileInfo, err error) error {
+	err := filepath.WalkDir(source, func(path string, info fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		if fi.IsDir() {
+		if info.IsDir() {
 			return nil
 		}
 
@@ -427,12 +428,12 @@ func updateCommand(ctx *cli.Context) error {
 
 	// Get new files from the source path.
 	var sourceMap = make(map[string]bool)
-	err := filepath.Walk(source, func(path string, fi os.FileInfo, err error) error {
+	err := filepath.WalkDir(source, func(path string, info fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		if fi.IsDir() {
+		if info.IsDir() {
 			return nil
 		}
 
@@ -525,13 +526,13 @@ func verifyCommand(ctx *cli.Context) error {
 	}
 
 	if fileInfo.IsDir() {
-		filepath.Walk(path, func(path string, fi os.FileInfo, err error) error {
+		filepath.WalkDir(path, func(path string, info fs.DirEntry, err error) error {
 			if err != nil {
 				printColored(fmt.Sprintf(" Error: %v\n", err), color.FgHiRed)
 				return nil
 			}
 
-			if strings.HasSuffix(path, ".md5") && !fi.IsDir() {
+			if strings.HasSuffix(path, ".md5") && !info.IsDir() {
 				if ctx.Bool("basic") {
 					verifyFileBasic(path)
 				} else {

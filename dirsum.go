@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -126,7 +125,7 @@ func (slice Checksums) Swap(a, b int) {
 func readFile(path string) (Checksums, error) {
 	var sums Checksums
 
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return sums, err
 	}
@@ -161,7 +160,7 @@ func readFile(path string) (Checksums, error) {
 }
 
 func readFileToMap(path string) (map[string]Checksum, error) {
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +212,7 @@ func writeFile(sums Checksums, path string) error {
 		output.WriteString(fmt.Sprintf("%v *%v\n", sum.Hash, relPath))
 	}
 
-	return ioutil.WriteFile(path, output.Bytes(), 0644)
+	return os.WriteFile(path, output.Bytes(), 0644)
 }
 
 func generateMd5(path string) (string, error) {
